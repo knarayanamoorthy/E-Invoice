@@ -1,0 +1,34 @@
+package com.example.backend.service;
+
+import com.example.backend.model.Invoice;
+import com.example.backend.repository.InvoiceRepository;
+import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+
+@Service
+public class InvoiceService {
+
+    private final InvoiceRepository repository;
+
+    public InvoiceService(InvoiceRepository repository) {
+        this.repository = repository;
+    }
+
+    public Invoice createInvoice(Invoice invoice) {
+        // Auto-generate invoice number
+        Invoice lastInvoice = repository.findTopByOrderByIdDesc();
+        String newInvoiceNumber;
+        if (lastInvoice != null) {
+            String lastNumber = lastInvoice.getInvoiceNumber().split("-")[2]; // "INV-20260112-001"
+            int next = Integer.parseInt(lastNumber) + 1;
+            newInvoiceNumber = "INV-" + LocalDate.now().toString().replace("-", "") + "-" + String.format("%03d", next);
+        } else {
+            newInvoiceNumber = "INV-" + LocalDate.now().toString().replace("-", "") + "-001";
+        }
+
+        invoice.setInvoiceNumber(newInvoiceNumber);
+        invoice.setDate(LocalDate.now());
+
+        return repository.save(invoice);
+    }
+}

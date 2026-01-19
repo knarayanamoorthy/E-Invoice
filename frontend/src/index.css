@@ -1,0 +1,188 @@
+/* ===== Global Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: #f4f6f9;
+  color: #333;
+}
+
+/* ===== Layout ===== */
+.container {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Header ===== */
+header {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  padding: 18px 30px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* ===== Sticky Header ===== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header h1 {
+  font-size: 22px;
+}
+
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline rgb(67, 181, 225);
+  
+ 
+
+}
+
+/* ===== Fixed Footer ===== */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #e9ecef;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  color: #555;
+  border-top: 1px solid #ccc;
+}
+
+/* ===== Prevent content hiding behind footer ===== */
+body {
+  padding-bottom: 60px;
+}
+
+/* ===== Headings ===== */
+h2 {
+  margin-bottom: 20px;
+  color: #222;
+}
+
+/* ===== Table ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+table thead {
+  background: #007bff;
+  color: white;
+}
+
+table th,
+table td {
+  padding: 12px;
+  text-align: center;
+}
+
+table tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+table tr:hover {
+  background: #eef3ff;
+  color: #007bff;
+}
+
+/* ===== Buttons ===== */
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 5px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button[type="submit"] {
+  background: #007bff;
+  color: white;
+  padding: 10px 18px;
+  margin-top: 15px;
+}
+
+button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+}
+
+/* ===== Links ===== */
+a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Forms ===== */
+form {
+  max-width: 500px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin: 2px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* ===== Dashboard Card ===== */
+.dashboard-card {
+  padding: 25px;
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: white;
+  border-radius: 12px;
+  font-size: 18px;
+}
