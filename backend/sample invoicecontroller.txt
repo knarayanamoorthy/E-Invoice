@@ -1,0 +1,152 @@
+
+// package com.example.backend.controller;
+
+// import java.time.LocalDate;
+// import java.util.List;
+
+// import org.springframework.web.bind.annotation.CrossOrigin;
+// import org.springframework.web.bind.annotation.DeleteMapping;
+// import org.springframework.web.bind.annotation.GetMapping;
+// import org.springframework.web.bind.annotation.PathVariable;
+// import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
+// import org.springframework.web.bind.annotation.RequestHeader;
+// import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RestController;
+
+// import com.example.backend.model.Invoice;
+// import com.example.backend.model.InvoiceItem;
+// import com.example.backend.repository.InvoiceRepository;
+
+// @RestController
+// @RequestMapping("/api/invoices")
+// @CrossOrigin(origins = "http://localhost:5173")
+// public class InvoiceController {
+
+//     private final InvoiceRepository invoiceRepository;
+
+//     public InvoiceController(InvoiceRepository invoiceRepository) {
+//         this.invoiceRepository = invoiceRepository;
+//     }
+
+//     // ================= CREATE (ADMIN + USER) =================
+//     @PostMapping
+//     public Invoice saveInvoice(
+//             @RequestBody Invoice invoice,
+//             @RequestHeader("Role") String role) {
+
+//         if (!role.equals("ADMIN") && !role.equals("USER")) {
+//             throw new RuntimeException("Access denied");
+//         }
+
+//         // ---------- Invoice Number ----------
+//         Invoice lastInvoice = invoiceRepository.findTopByOrderByIdDesc();
+//         String newInvoiceNumber;
+
+//         if (lastInvoice != null && lastInvoice.getInvoiceNumber() != null) {
+//             String lastNumber = lastInvoice.getInvoiceNumber().split("-")[2];
+//             int next = Integer.parseInt(lastNumber) + 1;
+//             newInvoiceNumber = "INV-" + LocalDate.now().toString().replace("-", "") +
+//                     "-" + String.format("%03d", next);
+//         } else {
+//             newInvoiceNumber = "INV-" + LocalDate.now().toString().replace("-", "") + "-001";
+//         }
+//         invoice.setInvoiceNumber(newInvoiceNumber);
+
+//         if (invoice.getDate() == null) {
+//             invoice.setDate(LocalDate.now());
+//         }
+
+//         // ---------- Calculate Amount, GST, Total ----------
+//         double amount = 0;
+//         for (InvoiceItem item : invoice.getItems()) {
+//             amount += item.getQuantity() * item.getPrice();
+//             item.setInvoice(invoice);
+//         }
+
+//         double gst = amount * 0.18;
+//         double total = amount + gst;
+
+//         invoice.setAmount(amount);
+//         invoice.setGstAmount(gst);
+//         invoice.setTotalAmount(total);
+
+//         return invoiceRepository.save(invoice);
+//     }
+
+//     // ================= READ (ADMIN + USER) =================
+//     @GetMapping
+//     public List<Invoice> getAllInvoices(
+//             @RequestHeader("Role") String role) {
+
+//         if (!role.equals("ADMIN") && !role.equals("USER")) {
+//             throw new RuntimeException("Access denied");
+//         }
+
+//         return invoiceRepository.findAll();
+//     }
+
+//     @GetMapping("/{id}")
+//     public Invoice getInvoiceById(
+//             @PathVariable Long id,
+//             @RequestHeader("Role") String role) {
+
+//         if (!role.equals("ADMIN") && !role.equals("USER")) {
+//             throw new RuntimeException("Access denied");
+//         }
+
+//         return invoiceRepository.findById(id)
+//                 .orElseThrow(() -> new RuntimeException("Invoice not found with id: " + id));
+//     }
+
+//     // ================= UPDATE (ADMIN ONLY) =================
+//     @PutMapping("/{id}")
+//     public Invoice updateInvoice(
+//             @PathVariable Long id,
+//             @RequestBody Invoice invoice,
+//             @RequestHeader("Role") String role) {
+
+//         if (!role.equals("ADMIN")) {
+//             throw new RuntimeException("Access denied: Only ADMIN can update invoices");
+//         }
+
+//         Invoice existing = invoiceRepository.findById(id).orElseThrow();
+
+//         existing.setCustomerName(invoice.getCustomerName());
+//         existing.setCustomerNumber(invoice.getCustomerNumber());
+       
+
+//         // Clear old items and recalc
+//         existing.getItems().clear();
+//         double amount = 0;
+
+//         for (InvoiceItem item : invoice.getItems()) {
+//             item.setInvoice(existing);
+//             existing.getItems().add(item);
+//             amount += item.getQuantity() * item.getPrice();
+//         }
+
+//         double gst = amount * 0.18;
+//         double total = amount + gst;
+
+//         existing.setAmount(amount);
+//         existing.setGstAmount(gst);
+//         existing.setTotalAmount(total);
+
+//         return invoiceRepository.save(existing);
+//     }
+
+//     // ================= DELETE (ADMIN ONLY) =================
+//     @DeleteMapping("/{id}")
+//     public void deleteInvoice(
+//             @PathVariable Long id,
+//             @RequestHeader("Role") String role) {
+
+//         if (!role.equals("ADMIN")) {
+//             throw new RuntimeException("Access denied: Only ADMIN can delete invoices");
+//         }
+
+//         invoiceRepository.deleteById(id);
+//     }
+// }

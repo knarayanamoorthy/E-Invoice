@@ -51,6 +51,7 @@ fetch(`http://localhost:8080/api/invoices/${id}`)
       <h5 className="mt-3">Subtotal: ₹ {invoice.amount.toFixed(2)}</h5>
       <h6>GST (18%): ₹ {invoice.gstAmount.toFixed(2)}</h6>
       <h4>Total: ₹ {invoice.totalAmount.toFixed(2)}</h4>
+      
 
       
     </div>

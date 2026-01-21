@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,11 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.dto.InvoiceReportResponse;
 import com.example.backend.model.Invoice;
 import com.example.backend.model.InvoiceItem;
 import com.example.backend.repository.InvoiceRepository;
+
+
 @RestController
 @RequestMapping("/api/invoices")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -28,42 +33,40 @@ public class InvoiceController {
     }
 
     // ================= CREATE =================
-    @PostMapping
-    public Invoice saveInvoice(@RequestBody Invoice invoice) {
+   @PostMapping
+public Invoice saveInvoice(@RequestBody Invoice invoice) {
 
-        Invoice lastInvoice = invoiceRepository.findTopByOrderByIdDesc();
-        String newInvoiceNumber;
+    Invoice lastInvoice = invoiceRepository.findTopByOrderByIdDesc();
+    String newInvoiceNumber;
 
-        if (lastInvoice != null && lastInvoice.getInvoiceNumber() != null) {
-            String lastNumber = lastInvoice.getInvoiceNumber().split("-")[2];
-            int next = Integer.parseInt(lastNumber) + 1;
-            newInvoiceNumber = "INV-" + LocalDate.now().toString().replace("-", "") +
-                    "-" + String.format("%03d", next);
-        } else {
-            newInvoiceNumber = "INV-" + LocalDate.now().toString().replace("-", "") + "-001";
-        }
-
-        invoice.setInvoiceNumber(newInvoiceNumber);
-
-        if (invoice.getDate() == null) {
-            invoice.setDate(LocalDate.now());
-        }
-
-        double amount = 0;
-        for (InvoiceItem item : invoice.getItems()) {
-            amount += item.getQuantity() * item.getPrice();
-            item.setInvoice(invoice);
-        }
-
-        double gst = amount * 0.18;
-        double total = amount + gst;
-
-        invoice.setAmount(amount);
-        invoice.setGstAmount(gst);
-        invoice.setTotalAmount(total);
-
-        return invoiceRepository.save(invoice);
+    if (lastInvoice != null && lastInvoice.getInvoiceNumber() != null) {
+        int next = Integer.parseInt(lastInvoice.getInvoiceNumber().split("-")[2]) + 1;
+        newInvoiceNumber = "INV-" + LocalDate.now().toString().replace("-", "") +
+                "-" + String.format("%03d", next);
+    } else {
+        newInvoiceNumber = "INV-" + LocalDate.now().toString().replace("-", "") + "-001";
     }
+
+    invoice.setInvoiceNumber(newInvoiceNumber);
+    invoice.setDate(LocalDate.now());
+
+    double amount = 0;
+
+    List<InvoiceItem> incomingItems = new ArrayList<>(invoice.getItems());
+    invoice.clearItems();
+
+    for (InvoiceItem item : incomingItems) {
+        amount += item.getQuantity() * item.getPrice();
+        invoice.addItem(item); // 🔥 sets invoice_id properly
+    }
+
+    double gst = amount * 0.18;
+    invoice.setAmount(amount);
+    invoice.setGstAmount(gst);
+    invoice.setTotalAmount(amount + gst);
+
+    return invoiceRepository.save(invoice);
+}
 
     // ================= READ =================
     @GetMapping
@@ -108,4 +111,41 @@ public class InvoiceController {
     public void deleteInvoice(@PathVariable Long id) {
         invoiceRepository.deleteById(id);
     }
+ // ================= REPORT =================
+    @GetMapping("/report")
+    public InvoiceReportResponse getInvoiceReport(
+            @RequestParam String fromDate,
+            @RequestParam String toDate,
+            @RequestParam(defaultValue = "") String customer) {
+
+        LocalDate start = LocalDate.parse(fromDate);
+        LocalDate end = LocalDate.parse(toDate);
+
+        List<Invoice> invoices =
+                invoiceRepository.findByDateBetweenAndCustomerNameContainingIgnoreCase(
+                        start, end, customer
+                );
+
+        long totalInvoices = invoices.size();
+
+        double totalRevenue = invoices.stream()
+                .mapToDouble(Invoice::getTotalAmount)
+                .sum();
+
+        return new InvoiceReportResponse(invoices, totalInvoices, totalRevenue);
+    }
+
+    private String generateNextInvoiceNumber(String lastInvoiceNumber) {
+
+    // Example: INV-20260112-005
+    String[] parts = lastInvoiceNumber.split("-");
+
+    int next = Integer.parseInt(parts[2]) + 1;
+
+    return "INV-" +
+            LocalDate.now().toString().replace("-", "") +
+            "-" +
+            String.format("%03d", next);
 }
+}
+

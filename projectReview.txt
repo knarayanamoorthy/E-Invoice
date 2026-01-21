@@ -1,0 +1,202 @@
+🔹 PROJECT OVERVIEW – E-Invoice System
+
+Project Name:
+Role-Based E-Invoice Management System
+
+Technology Stack:
+
+Frontend: React.js
+
+Backend: Spring Boot (REST API)
+
+Database: MySQL
+
+Authentication: Role-based (ADMIN / USER)
+
+Purpose:
+To manage invoices digitally with secure role-based access control, GST calculation, and professional invoice viewing.
+
+🔹 FEATURES SUMMARY
+👤 Authentication
+
+Login & Register system
+
+Role-based access (ADMIN / USER)
+
+Session handled using localStorage
+
+👑 Admin Role
+
+Create invoices
+
+View all invoices
+
+Delete invoices
+
+GST (18%) auto calculation
+
+Dashboard access with full control
+
+👤 User Role
+
+Login & view invoices
+
+Cannot edit or delete invoices
+
+Read-only invoice access
+
+📄 Invoice Management
+
+Auto invoice number generation
+
+Item-based calculation (Qty × Price)
+
+GST & total calculation
+
+Print / Download invoice
+
+🔹 SYSTEM FLOW (Simple)
+Dashboard
+   ↓
+Login / Register
+   ↓
+Role Check
+   ↓
+ADMIN → Create / View / Delete Invoices
+USER  → View Invoices Only
+
+🔹 PPT PRESENTATION (SLIDE CONTENT)
+🟦 Slide 1 – Title
+
+E-Invoice Management System
+Role-Based Secure Invoice Application
+Developed using React & Spring Boot
+
+🟦 Slide 2 – Problem Statement
+
+Manual invoice management is error-prone
+
+No role-based access
+
+GST calculation mistakes
+
+Need for secure digital invoices
+
+🟦 Slide 3 – Solution
+
+Web-based E-Invoice System
+
+Role-based login (Admin/User)
+
+Automatic GST calculation
+
+Secure invoice handling
+
+🟦 Slide 4 – Technologies Used
+
+Frontend: React.js
+
+Backend: Spring Boot (REST API)
+
+Database: MySQL
+
+Tools: VS Code, Postman
+
+🟦 Slide 5 – User Roles
+
+Admin
+
+Create invoice
+
+View invoice
+
+Delete invoice
+
+User
+
+View invoice only
+
+🟦 Slide 6 – Key Features
+
+Secure login & logout
+
+Role-based dashboard
+
+GST calculation
+
+Invoice print/download
+
+🟦 Slide 7 – Conclusion
+
+Efficient invoice management
+
+Secure role-based access
+
+Reduces manual errors
+
+Scalable for real-time business use
+
+🔹 SMALL REPORT DOCUMENT (You Can Submit)
+1. Introduction
+
+The E-Invoice Management System is a web-based application developed to manage invoices securely and efficiently. It replaces traditional manual invoice handling with a digital, role-based solution.
+
+2. Objectives
+
+To provide secure login and authentication
+
+To manage invoices digitally
+
+To implement role-based access control
+
+To calculate GST automatically
+
+3. System Architecture
+
+Frontend developed using React.js
+
+Backend REST APIs using Spring Boot
+
+Data stored in MySQL database
+
+Communication via HTTP/JSON
+
+4. Functional Modules
+
+User Registration & Login
+
+Admin Dashboard
+
+Invoice Creation
+
+Invoice Viewing
+
+Role-based Access Control
+
+5. Advantages
+
+Reduces human error
+
+Improves data security
+
+Easy invoice management
+
+Time efficient
+
+6. Conclusion
+
+The E-Invoice System successfully provides a secure and scalable solution for invoice management. It ensures proper access control and accurate billing through automation.
+
+7. Future Enhancements
+
+PDF export
+
+Email invoice to customer
+
+JWT authentication
+
+Payment integration
+
+🔹 ONE-LINE PROJECT DESCRIPTION (For Resume / Viva)
+
+“Developed a role-based E-Invoice Management System using React and Spring Boot with secure authentication, GST calculation, and invoice management.”

@@ -186,3 +186,9 @@ input:focus {
   border-radius: 12px;
   font-size: 18px;
 }
+.btn-secondary{
+  width: 30%;
+}
+.btn-primary {
+  width: 30%;
+}

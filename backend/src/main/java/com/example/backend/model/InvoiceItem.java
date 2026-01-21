@@ -1,15 +1,18 @@
-package com.example.backend.model;   // change if your package name is different
+package com.example.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "invoice_items")
 public class InvoiceItem {
 
     @Id
@@ -17,55 +20,32 @@ public class InvoiceItem {
     private Long id;
 
     private String productName;
-    private Double price;
-    private Integer quantity;
+    private int quantity;
+    private double price;
+    private Double total;
 
-    @ManyToOne
-    @JoinColumn(name = "invoice_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "invoice_id", nullable = false)
     @JsonBackReference
     private Invoice invoice;
 
-    // -------- GETTERS --------
+    // getters & setters
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getProductName() {
-        return productName;
-    }
+    public String getProductName() { return productName; }
+    public void setProductName(String productName) { this.productName = productName; }
 
-    public Double getPrice() {
-        return price;
-    }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public Invoice getInvoice() {
-        return invoice;
-    }
+    public Double getTotal() { return total; }
+    public void setTotal(Double total) { this.total = total; }
 
-    // -------- SETTERS --------
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
-    }
+    public Invoice getInvoice() { return invoice; }
+    public void setInvoice(Invoice invoice) { this.invoice = invoice; }
 }
